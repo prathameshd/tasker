@@ -1,0 +1,36 @@
+@use '../../styles/variables' as *;
+
+.nav {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  flex: 0 0 $nav-width;
+  width: $nav-width;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-unit * 2 0;
+  background-color: $color-surface;
+  border-right: 1px solid $color-border;
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-unit;
+  }
+
+  &__item {
+    color: $color-text-muted;
+
+    &:hover {
+      color: $color-primary;
+    }
+
+    &.nav__item--active {
+      color: $color-primary;
+    }
+  }
+}

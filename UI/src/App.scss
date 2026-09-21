@@ -1,0 +1,40 @@
+@use './styles/variables' as *;
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: $spacing-unit * 6 $spacing-unit * 3;
+}
+
+.auth-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-unit * 2;
+  height: 100vh;
+  text-align: center;
+
+  &__title {
+    margin: 0;
+  }
+
+  &__error {
+    margin: 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $spacing-unit * 2;
+  }
+}
