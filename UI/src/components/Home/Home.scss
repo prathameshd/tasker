@@ -1,0 +1,22 @@
+@use '../../styles/variables' as *;
+
+.home {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+
+  &__title {
+    flex: 0 0 auto;
+    margin: 0 0 $spacing-unit * 2;
+  }
+
+  &__list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-unit;
+  }
+}

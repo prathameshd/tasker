@@ -13,5 +13,5 @@ export default function Settings() {
     ss();
   }, [])
 
-  return <h1>Settings component loaded</h1>
+  return <h1>Settings</h1>
 }

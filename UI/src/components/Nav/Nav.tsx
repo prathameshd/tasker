@@ -7,6 +7,8 @@ import MenuItem from '@mui/material/MenuItem'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 import { HouseIcon, PlusIcon, GearIcon, UserIcon } from '@phosphor-icons/react'
+import NewTask from '../NewTask/NewTask'
+import type { NewTaskFields } from '../NewTask/NewTask'
 import './Nav.scss'
 
 const topItems: { path?: string; label: string; Icon: typeof HouseIcon }[] = [
@@ -19,9 +21,14 @@ export default function Nav() {
   const { pathname } = useLocation()
   const { logout } = useAuth0()
   const [userMenuAnchor, setUserMenuAnchor] = useState<HTMLElement | null>(null)
+  const [newTaskOpen, setNewTaskOpen] = useState(false)
 
   const openUserMenu = (event: MouseEvent<HTMLElement>) => setUserMenuAnchor(event.currentTarget)
   const closeUserMenu = () => setUserMenuAnchor(null)
+
+  const handleSaveTask = (task: NewTaskFields) => {
+    console.log('New task', task)
+  }
 
   const handleLogout = () => {
     closeUserMenu()
@@ -39,7 +46,12 @@ export default function Nav() {
               <Icon size={24} />
             </IconButton>
           ) : (
-            <IconButton key={label} className={className} aria-label={label}>
+            <IconButton
+              key={label}
+              className={className}
+              aria-label={label}
+              onClick={() => setNewTaskOpen(true)}
+            >
               <Icon size={24} />
             </IconButton>
           )
@@ -69,6 +81,8 @@ export default function Nav() {
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </Box>
+
+      <NewTask open={newTaskOpen} onClose={() => setNewTaskOpen(false)} onSave={handleSaveTask} />
     </Box>
   )
 }
