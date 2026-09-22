@@ -2,3 +2,5 @@ node_modules
 dist
 .env
 *.local
+
+/src/generated/prisma
