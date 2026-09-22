@@ -5,4 +5,5 @@ export interface Task {
   dueDate: string
   createdAt: string
   Tag: string[]
+  status: string | null
 }

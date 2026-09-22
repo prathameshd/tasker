@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
   const { name, description, dueDate, Tag } = req.body
 
   const task = await prisma.task.create({
-    data: { name, description, dueDate: new Date(dueDate), Tag: Tag ?? [], userId },
+    data: { name, description, dueDate: new Date(dueDate), Tag: Tag ?? [], status: 'pending', userId },
   })
   res.status(201).json(task)
 })
@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const userId = req.auth!.payload.sub!
   const { id } = req.params
-  const { name, description, dueDate, Tag } = req.body
+  const { name, description, dueDate, Tag, status } = req.body
 
   const result = await prisma.task.updateMany({
     where: { id, userId },
@@ -38,6 +38,7 @@ router.put('/:id', async (req, res) => {
       ...(description !== undefined && { description }),
       ...(dueDate !== undefined && { dueDate: new Date(dueDate) }),
       ...(Tag !== undefined && { Tag }),
+      ...(status !== undefined && { status }),
     },
   })
 

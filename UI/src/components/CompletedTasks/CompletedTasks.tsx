@@ -1,23 +1,22 @@
-import type { Task } from "../../../../Shared/Task"
 import type { User } from "../../../../Shared/User"
 import { useTasks } from "../../hooks/useTasks"
 import TaskCard from "../TaskCard/TaskCard";
-import "./Home.scss";
+import "../Home/Home.scss";
 
-interface HomeProps {
+interface CompletedTasksProps {
   dbUser: User | null
   refreshKey: number
 }
 
-export default function Home({ dbUser, refreshKey }: HomeProps) {
+export default function CompletedTasks({ dbUser, refreshKey }: CompletedTasksProps) {
   const { tasks, toggleStatus } = useTasks({ dbUser, refreshKey })
-  const pendingTasks = tasks.filter((task: Task) => task.status !== 'complete')
+  const completedTasks = tasks.filter((task) => task.status === 'complete')
 
   return (
     <div className="home">
-      <h1 className="home__title">Home</h1>
+      <h1 className="home__title">Completed</h1>
       <div className="home__list">
-        {pendingTasks.map((item) => {
+        {completedTasks.map((item) => {
           return <TaskCard key={item.id} task={item} onToggleStatus={toggleStatus} />
         })}
       </div>

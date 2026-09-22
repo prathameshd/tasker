@@ -3,9 +3,10 @@ import type { Task } from "../../../../Shared/Task";
 
 interface TaskCardProps {
   task: Task
+  onToggleStatus: (task: Task) => void
 }
 
-export default function TaskCard({ task }: TaskCardProps) {
+export default function TaskCard({ task, onToggleStatus }: TaskCardProps) {
   return (
     <div style={{ border: '1px solid #efefef' }}>
       <CardContent>
@@ -14,23 +15,13 @@ export default function TaskCard({ task }: TaskCardProps) {
           <Typography variant="h5" component="div">
             {task.name}
           </Typography>
-          <Checkbox />
-
+          <Checkbox checked={task.status === 'complete'} onChange={() => onToggleStatus(task)} />
         </div>
-
-        {/* <Typography variant="h5" component="div">
-          {task.name}
-        </Typography> */}
         <div style={{ display: 'flex' }}>
 
           <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{task.Tag.join(', ')}</Typography>
           <Typography variant="body2">{task.description}</Typography>
         </div>
-
-        {/* <FormControlLabel control={<Checkbox />} label="Disabled" /> */}
-        {/* <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-          {task.dueDate}
-        </Typography> */}
       </CardContent>
 
       {/* <CardActions>
