@@ -19,6 +19,14 @@ app.get('/health', (_req, res) => {
 app.use('/tasks', tasksRouter)
 app.use('/users', usersRouter)
 
+app.use((err: unknown, _req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (err instanceof Error && 'status' in err) {
+    res.status((err as { status: number }).status).json({ error: err.message })
+    return
+  }
+  next(err)
+})
+
 app.listen(port, () => {
   console.log(`API listening on port ${port}`)
 })

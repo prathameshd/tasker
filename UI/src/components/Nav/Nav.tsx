@@ -9,6 +9,8 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { HouseIcon, PlusIcon, GearIcon, UserIcon } from '@phosphor-icons/react'
 import NewTask from '../NewTask/NewTask'
 import type { NewTaskFields } from '../NewTask/NewTask'
+import type { User } from '../../../../Shared/User'
+import { useAuthFetch } from '../../hooks/useAuthFetch'
 import './Nav.scss'
 
 const topItems: { path?: string; label: string; Icon: typeof HouseIcon }[] = [
@@ -17,9 +19,15 @@ const topItems: { path?: string; label: string; Icon: typeof HouseIcon }[] = [
   { path: '/settings', label: 'Settings', Icon: GearIcon },
 ]
 
-export default function Nav() {
+interface NavProps {
+  dbUser: User | null
+  onTaskCreated: () => void
+}
+
+export default function Nav({ dbUser, onTaskCreated }: NavProps) {
   const { pathname } = useLocation()
   const { logout } = useAuth0()
+  const authFetch = useAuthFetch()
   const [userMenuAnchor, setUserMenuAnchor] = useState<HTMLElement | null>(null)
   const [newTaskOpen, setNewTaskOpen] = useState(false)
 
@@ -27,7 +35,15 @@ export default function Nav() {
   const closeUserMenu = () => setUserMenuAnchor(null)
 
   const handleSaveTask = (task: NewTaskFields) => {
-    console.log('New task', task)
+    if (!dbUser) return
+
+    authFetch(`${import.meta.env.VITE_API_URL}/tasks`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(task),
+    })
+      .then(onTaskCreated)
+      .catch((err) => console.error('Failed to create task', err))
   }
 
   const handleLogout = () => {

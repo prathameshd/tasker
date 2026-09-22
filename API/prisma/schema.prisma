@@ -19,10 +19,14 @@ model Task {
   dueDate     DateTime
   createdAt   DateTime @default(now())
   Tag         String[]
+  status      String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
 }
 
 model User {
-  id    String @id @default(uuid())
+  id    String @id
   name  String
   email String @unique
+  tasks Task[]
 }

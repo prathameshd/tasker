@@ -1,60 +1,67 @@
 import { Router } from 'express'
 import { prisma } from '../prisma.js'
-import { Prisma } from '../generated/prisma/client.js'
+import { checkJwt } from '../middleware/auth.js'
 
 const router = Router()
 
-router.get('/', async (_req, res) => {
-  const tasks = await prisma.task.findMany({ orderBy: { createdAt: 'desc' } })
+router.use(checkJwt)
+
+router.get('/', async (req, res) => {
+  const userId = req.auth!.payload.sub!
+
+  const tasks = await prisma.task.findMany({
+    where: { userId },
+    orderBy: { createdAt: 'desc' },
+  })
   res.json(tasks)
 })
 
 router.post('/', async (req, res) => {
+  const userId = req.auth!.payload.sub!
   const { name, description, dueDate, Tag } = req.body
 
   const task = await prisma.task.create({
-    data: { name, description, dueDate: new Date(dueDate), Tag: Tag ?? [] },
+    data: { name, description, dueDate: new Date(dueDate), Tag: Tag ?? [], userId },
   })
   res.status(201).json(task)
 })
 
 router.put('/:id', async (req, res) => {
+  const userId = req.auth!.payload.sub!
   const { id } = req.params
   const { name, description, dueDate, Tag } = req.body
 
-  try {
-    const task = await prisma.task.update({
-      where: { id },
-      data: {
-        ...(name !== undefined && { name }),
-        ...(description !== undefined && { description }),
-        ...(dueDate !== undefined && { dueDate: new Date(dueDate) }),
-        ...(Tag !== undefined && { Tag }),
-      },
-    })
-    res.json(task)
-  } catch (err) {
-    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2025') {
-      res.status(404).json({ error: 'Task not found' })
-      return
-    }
-    throw err
+  const result = await prisma.task.updateMany({
+    where: { id, userId },
+    data: {
+      ...(name !== undefined && { name }),
+      ...(description !== undefined && { description }),
+      ...(dueDate !== undefined && { dueDate: new Date(dueDate) }),
+      ...(Tag !== undefined && { Tag }),
+    },
+  })
+
+  if (result.count === 0) {
+    res.status(404).json({ error: 'Task not found' })
+    return
   }
+
+  const task = await prisma.task.findFirst({ where: { id, userId } })
+  res.json(task)
 })
 
 router.delete('/:id', async (req, res) => {
+  const userId = req.auth!.payload.sub!
   const { id } = req.params
 
-  try {
-    await prisma.task.delete({ where: { id } })
-    res.status(204).send()
-  } catch (err) {
-    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2025') {
-      res.status(404).json({ error: 'Task not found' })
-      return
-    }
-    throw err
+  const result = await prisma.task.deleteMany({ where: { id, userId } })
+
+  if (result.count === 0) {
+    res.status(404).json({ error: 'Task not found' })
+    return
   }
+
+  res.status(204).send()
 })
 
 export default router

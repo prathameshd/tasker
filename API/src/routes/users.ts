@@ -1,27 +1,21 @@
 import { Router } from 'express'
 import { prisma } from '../prisma.js'
-import { Prisma } from '../generated/prisma/client.js'
+import { checkJwt } from '../middleware/auth.js'
 
 const router = Router()
 
-router.get('/', async (_req, res) => {
-  const users = await prisma.user.findMany()
-  res.json(users)
-})
+router.use(checkJwt)
 
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
+  const sub = req.auth!.payload.sub!
   const { name, email } = req.body
 
-  try {
-    const user = await prisma.user.create({ data: { name, email } })
-    res.status(201).json(user)
-  } catch (err) {
-    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
-      res.status(409).json({ error: 'Email already in use' })
-      return
-    }
-    throw err
-  }
+  const user = await prisma.user.upsert({
+    where: { id: sub },
+    update: { name, email },
+    create: { id: sub, name, email },
+  })
+  res.json(user)
 })
 
 export default router
