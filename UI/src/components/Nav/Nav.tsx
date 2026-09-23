@@ -6,7 +6,7 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
-import { HouseIcon, PlusIcon, GearIcon, UserIcon, CheckCircleIcon } from '@phosphor-icons/react'
+import { HouseIcon, PlusIcon, GearIcon, UserIcon, CheckCircleIcon, ListBulletsIcon } from '@phosphor-icons/react'
 import NewTask from '../NewTask/NewTask'
 import type { NewTaskFields } from '../NewTask/NewTask'
 import type { User } from '../../../../Shared/User'
@@ -14,7 +14,7 @@ import { useAuthFetch } from '../../hooks/useAuthFetch'
 import './Nav.scss'
 
 const topItems: { path?: string; label: string; Icon: typeof HouseIcon }[] = [
-  { path: '/', label: 'Home', Icon: HouseIcon },
+  { path: '/', label: 'Home', Icon: ListBulletsIcon },
   { label: 'Add', Icon: PlusIcon },
   { path: '/settings', label: 'Settings', Icon: GearIcon },
   { path: '/completed', label: 'Completed', Icon: CheckCircleIcon },
@@ -60,7 +60,7 @@ export default function Nav({ dbUser, onTaskCreated }: NavProps) {
 
           return path ? (
             <IconButton key={label} component={Link} to={path} className={className} aria-label={label}>
-              <Icon size={24} />
+              <Icon size={20} />
             </IconButton>
           ) : (
             <IconButton
@@ -69,7 +69,7 @@ export default function Nav({ dbUser, onTaskCreated }: NavProps) {
               aria-label={label}
               onClick={() => setNewTaskOpen(true)}
             >
-              <Icon size={24} />
+              <Icon size={20} />
             </IconButton>
           )
         })}
@@ -84,7 +84,7 @@ export default function Nav({ dbUser, onTaskCreated }: NavProps) {
           aria-expanded={userMenuAnchor ? 'true' : undefined}
           onClick={openUserMenu}
         >
-          <UserIcon size={24} />
+          <UserIcon size={20} />
         </IconButton>
         <Menu
           id="user-menu"

@@ -37,5 +37,21 @@ export function useTasks({ dbUser, refreshKey }: UseTasksOptions) {
     [authFetch],
   )
 
-  return { tasks, toggleStatus }
+  const addTask = useCallback(
+    (fields: { name: string; description: string; dueDate: string }) => {
+      return authFetch(`${import.meta.env.VITE_API_URL}/tasks`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fields),
+      })
+        .then((res) => res.json())
+        .then((created: Task) => {
+          setTasks((prev) => [created, ...prev])
+          return created
+        })
+    },
+    [authFetch],
+  )
+
+  return { tasks, toggleStatus, addTask }
 }
