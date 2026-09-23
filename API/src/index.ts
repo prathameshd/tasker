@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import tasksRouter from './routes/tasks.js'
 import usersRouter from './routes/users.js'
+import toolsRouter from './routes/tools.js'
 
 dotenv.config()
 
@@ -18,6 +19,7 @@ app.get('/health', (_req, res) => {
 
 app.use('/tasks', tasksRouter)
 app.use('/users', usersRouter)
+app.use('/tools', toolsRouter)
 
 app.use((err: unknown, _req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (err instanceof Error && 'status' in err) {

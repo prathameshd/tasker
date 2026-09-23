@@ -11,13 +11,13 @@ export default function TaskCard({ task, onToggleStatus }: TaskCardProps) {
     <div style={{ border: '1px solid #efefef' }}>
       <CardContent>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {task.name}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <Checkbox size="small" checked={task.status === 'complete'} onChange={() => onToggleStatus(task)} />
+          {task.name}
         </div>
         <div style={{ display: 'flex' }}>
           <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{task.Tag.join(', ')}</Typography>
-          <Typography variant="body2">{task.description}</Typography>
+          {/* <Typography variant="body2">{task.description}</Typography> */}
         </div>
       </CardContent>
     </div>

@@ -6,7 +6,7 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
-import { HouseIcon, PlusIcon, GearIcon, UserIcon, CheckCircleIcon, ListBulletsIcon } from '@phosphor-icons/react'
+import { HouseIcon, PlusIcon, GearIcon, UserIcon, CheckCircleIcon, ListBulletsIcon, HeadCircuitIcon } from '@phosphor-icons/react'
 import NewTask from '../NewTask/NewTask'
 import type { NewTaskFields } from '../NewTask/NewTask'
 import type { User } from '../../../../Shared/User'
@@ -18,6 +18,7 @@ const topItems: { path?: string; label: string; Icon: typeof HouseIcon }[] = [
   { label: 'Add', Icon: PlusIcon },
   { path: '/settings', label: 'Settings', Icon: GearIcon },
   { path: '/completed', label: 'Completed', Icon: CheckCircleIcon },
+  { path: '/tools', label: 'Tools', Icon: HeadCircuitIcon },
 ]
 
 interface NavProps {

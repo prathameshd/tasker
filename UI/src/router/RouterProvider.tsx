@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from '../components/Home/Home'
 import Settings from '../components/Settings/Settings'
 import CompletedTasks from '../components/CompletedTasks/CompletedTasks'
+import Tools from '../components/Tools/Tools'
 import type { User } from '../../../Shared/User'
 
 interface RouterProviderProps {
@@ -15,6 +16,7 @@ export default function RouterProvider({ dbUser, taskRefreshKey }: RouterProvide
       <Route index element={<Home dbUser={dbUser} refreshKey={taskRefreshKey} />} />
       <Route path="settings" element={<Settings />} />
       <Route path="completed" element={<CompletedTasks dbUser={dbUser} refreshKey={taskRefreshKey} />} />
+      <Route path="tools" element={<Tools />} />
     </Routes>
   )
 }
